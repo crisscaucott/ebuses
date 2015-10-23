@@ -10,6 +10,9 @@ class EmpresaBuses(models.Model):
 	class Meta:
 		db_table = 'empresa_buses'
 
+	def __unicode__(self):
+		return self.nombre
+
 class Parada(models.Model):
 	nombre = models.CharField(max_length = 30)
 	gps_lat = models.FloatField()
