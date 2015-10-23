@@ -43,7 +43,9 @@ class ParadaRecorrido(models.Model):
 
 class Usuario(models.Model):
 	nombre = models.CharField(max_length = 40)
-
+	apellido = models.CharField(max_length = 40)
+	rut = models.CharField(max_length = 12)
+	
 	class Meta:
 		db_table = 'usuario'
 
