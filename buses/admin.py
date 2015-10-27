@@ -24,4 +24,4 @@ class UsuarioAdmin(admin.ModelAdmin):
 
 @admin.register(Clasificacion)
 class ClasificacionAdmin(admin.ModelAdmin):
-	list_display = ['empresa', 'estrellas', 'comentario', 'usuario', 'recorrido']
+	list_display = ['estrellas', 'comentario', 'usuario', 'recorrido']

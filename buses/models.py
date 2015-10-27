@@ -29,6 +29,7 @@ class Recorrido(models.Model):
 	origen = models.ForeignKey(Parada, null = True, related_name = 'origen')
 	destino = models.ForeignKey(Parada, null = True, related_name = 'destino')
 	empresa_bus = models.ForeignKey(EmpresaBuses)
+	dia = models.DateTimeField(null = True)
 
 	class Meta:
 		db_table = 'recorridos'
@@ -51,7 +52,7 @@ class Usuario(models.Model):
 
 
 class Clasificacion(models.Model):
-	empresa = models.ForeignKey(EmpresaBuses)
+	#empresa = models.ForeignKey(EmpresaBuses)
 	estrellas = models.PositiveSmallIntegerField()
 	comentario = models.TextField()
 	usuario = models.ForeignKey(Usuario)
