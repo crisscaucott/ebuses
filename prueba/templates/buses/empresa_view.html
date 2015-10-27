@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Empresa de Buses list</title>
+</head>
+<body>
+	<ul>
+		{% for e in empresabuses_list %} 
+			<li>{{e.id}} , {{e.nombre}}, {{e.url}}, {{e.telefono}}, {{e.direccion}} <a href="{% url 'empresa_update' pk=e.pk %}"> Editar</a></li>
+		{% endfor %}
+	</ul>
+</body>
+</html>

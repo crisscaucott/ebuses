@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<title>Empresa de Buses Create</title>
+</head>
+<body>
+	<form action="." method="POST">
+		{% csrf_token %}
+		{# crea todo el form #}
+		{{ form }} 
+		<input type="submit" value="Enviar">
+		
+	</form>
+</body>
+</html>
