@@ -27,6 +27,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+MEDIA_ROOT = os.getenv('MEDIA_ROOT', os.path.join(BASE_DIR, 'mediafiles'))
+MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
+
+STATIC_ROOT = os.getenv('STATIC_ROOT', os.path.join(BASE_DIR, 'staticfiles'))
+STATIC_URL = os.getenv('STATIC_URL', '/static/')
+
+STATICFILES_DIRS = (
+os.path.join(BASE_DIR, "prueba", "static")
+    )
 
 # Application definition
 
