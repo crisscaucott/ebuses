@@ -6,6 +6,7 @@ class EmpresaBuses(models.Model):
 	url = models.URLField(max_length = 100)
 	telefono = models.CharField(max_length = 20)
 	direccion = models.CharField(max_length = 40)
+	activo = models.BooleanField(default=True)
 
 	class Meta:
 		db_table = 'empresa_buses'

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView
 from django.core.urlresolvers import reverse, reverse_lazy
 
-from .models import EmpresaBuses
+from .models import EmpresaBuses, Recorrido#, #Ciudades
 
 # Create your views here.
 class EmpresaBusesListView(ListView):
@@ -10,9 +10,16 @@ class EmpresaBusesListView(ListView):
 	template_name = 'buses/empresa_view.html'
 
 	# FILTRAR 
-	# def get_queryset(self):
-	# 	q = super(EmpresaBusesListView, self).get_queryset(self)
-	# 	return q.filter(deleted_at = False)
+	def get_queryset(self):
+		q = super(EmpresaBusesListView, self).get_queryset()
+		Recorrido.objects.filter(empresa_bus__activo=True)
+		return q.filter(activo = True)
+
+	def get_context_data(self, **kwargs):
+	    context = super(EmpresaBusesListView, self).get_context_data(**kwargs)
+	    #context['ciudades'] = Ciudades.objects.all()
+	    return context
+
 
 empresa_list = EmpresaBusesListView.as_view()
 
