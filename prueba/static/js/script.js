@@ -2,7 +2,7 @@
 document.getElementById('loginBtn').addEventListener('click', function(e){
 	var data = $('#loginForm').serialize();
 	var url = 'http://localhost:8000/accounts/login/';
-	console.log(data);
+	// console.log(data);
 
 	$.ajax({
 		type: 'POST',
@@ -13,6 +13,8 @@ document.getElementById('loginBtn').addEventListener('click', function(e){
 			$('#login').modal('hide');
 			$('#logoutLi').removeClass('hidden');
 			$('#loginLi').addClass('hidden');
+			console.log(res);
+			console.log(data);
 			// console.log("MUY BIEN");
 		},
 		error:function(res, data){

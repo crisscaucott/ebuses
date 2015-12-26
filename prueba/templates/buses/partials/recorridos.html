@@ -1,0 +1,18 @@
+<table class="table table-hover table-bordered">
+	<tr>
+		<th>Recorrido</th>
+		<th>Precio</th>
+		<th>Origen</th>
+		<th>Destino</th>
+		<th>Accion</th>
+	</tr>
+	<tr>
+		{% for r in recorridos %}
+			<td>{{ r.nombre }}</td>
+			<td>${{ r.precio }}</td>
+			<td>{{ r.origen_id }}</td>
+			<td>{{ r.destino_id }}</td>
+			<td><button href="#calificar" class="btn btn-primary" data-toggle="modal" value="{{ r.id }}" id="calificarModalBtn">Calificar</button></td>
+		{% endfor %}
+	</tr>
+</table>

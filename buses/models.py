@@ -1,5 +1,5 @@
 from django.db import models
-
+import allauth.app_settings
 # Create your models here.
 class EmpresaBuses(models.Model):
 	nombre = models.CharField(max_length = 40)
@@ -56,7 +56,8 @@ class Clasificacion(models.Model):
 	#empresa = models.ForeignKey(EmpresaBuses)
 	estrellas = models.PositiveSmallIntegerField()
 	comentario = models.TextField()
-	usuario = models.ForeignKey(Usuario)
+	# usuario = models.ForeignKey(Usuario)
+	usuario = models.ForeignKey(allauth.app_settings.USER_MODEL)
 	recorrido = models.ForeignKey(Recorrido)
 
 	class Meta:
