@@ -1,0 +1,31 @@
+<header>
+	<nav class="navbar navbar-default" id="navBar">
+		<a class="navbar-brand" rel="home" href="#" >
+			<img src="" alt="Logo aqui">
+		</a>
+		<div class="col-md-offset-2">
+			<ul class="nav nav-pills nav-justified">
+				<li class="active"><a href="{% url 'empresa_list' %}">Home</a></li>
+				<li><a href="{% url 'empresas_buses_index' %}">Empresas</a></li>
+				<li><a href="#">Quienes somos</a></li>
+				<li><a href="#">Contacto</a></li>
+				{% if request.user.is_authenticated %}
+					<li id="loginLi" class="hidden"><a href="#login" data-toggle="modal">Login <span class="caret"></span></a></li>
+					<li class="dropdown" role="presentation" id="logoutLi">
+						<a href="#" data-toggle="dropdown" class="dropdown-toggle">
+							{{ request.user.first_name }} <span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li id="logoutLi">
+								<a href="#" data-toggle="modal" id="logout">Logout</a>
+							</li>									
+							<li role="presentation"><a href="{% url 'calificaciones_by_usuario' request.user.id %}">Calificaciones</a></li>
+						</ul>
+					</li>
+				{% else %}
+					<li id="loginLi"><a href="#login" data-toggle="modal">Login <span class="caret"></span></a></li>
+				{% endif %}
+			</ul>
+		</div>
+	</nav>
+</header>

@@ -1,0 +1,10 @@
+<h3 class="text-center">Calificaciones de {{ request.user.first_name }} </h3>
+<form action="{% url 'calificaciones_by_usuario' %}" method="POST">
+	<input type="hidden" name="csrfmiddlewaretoken" value="{{ token }}">
+
+	<ul class="list-group">
+		{% for c in calificaciones %}
+			<a href="{{c.id}}" class="list-group-item">{{ c.id }}. "{{ c.recorrido.nombre }}" | {{ c.estrellas }} Estrellas</a>
+		{% endfor %}
+	</ul>
+</form>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+		<title>Empresas</title>
+	</head>
+	<body>
+		<div class="container">
+			<div id="mensajesNotif"></div>
+			<header>
+				<nav class="navbar navbar-default" id="navBar">
+					<a class="navbar-brand" rel="home" href="#" >
+						<img src="" alt="Logo aqui">
+					</a>
+					<div class="col-md-offset-2">
+						<ul class="nav nav-pills nav-justified">
+							<li><a href="{% url 'empresa_list' %}">Home</a></li>
+							<li><a href="{% url 'empresas_buses_index' %}">Empresas</a></li>
+							<li><a href="#">Quienes somos</a></li>
+							<li><a href="#">Contacto</a></li>
+							{% if request.user.is_authenticated %}
+								<li id="loginLi" class="hidden"><a href="#login" data-toggle="modal">Login <span class="caret"></span></a></li>
+								<li class="dropdown active" role="presentation" id="logoutLi">
+									<a href="#" data-toggle="dropdown" class="dropdown-toggle">
+										{{ request.user.first_name }} <span class="caret"></span>
+									</a>
+									<ul class="dropdown-menu">
+										<li id="logoutLi">
+											<a href="#" data-toggle="modal" id="logout">Logout</a>
+										</li>									
+										<li role="presentation"><a href="{% url 'calificaciones_by_usuario' %}">Calificaciones</a></li>
+									</ul>
+								</li>
+							{% else %}
+								<li id="loginLi"><a href="#login" data-toggle="modal">Login <span class="caret"></span></a></li>
+							{% endif %}
+						</ul>
+					</div>
+				</nav>
+			</header>
+
+			<div class="col-md-5" id="calificaciones_container">
+				<h3 class="text-center">Calificaciones de {{ request.user.first_name }} </h3>
+				<form action="{% url 'calificaciones_by_usuario' %}" method="POST">
+					{% csrf_token %}
+
+					<ul class="list-group">
+						{% for c in calificaciones %}
+							<a href="{{c.id}}" class="list-group-item">{{ c.id }}. "{{ c.recorrido.nombre }}" | {{ c.estrellas }} Estrellas</a>
+						{% endfor %}
+					</ul>
+				</form>
+			</div>
+
+			<div class="col-md-7" >
+				<h3 class="text-center">Detalles</h3>
+				<div id="detalles_container">
+					
+				</div>
+			</div>
+		</div>
+	</body>
+	
+	<script src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/script.js' %}"></script>
+	<script src="{% static 'js/calificacion_script.js' %}"></script>
+</html>

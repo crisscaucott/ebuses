@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView
 from django.core.urlresolvers import reverse, reverse_lazy
 # import pprint
+from django.contrib.auth import logout
+from django.template.loader import render_to_string
 from django.http import JsonResponse
 from .models import EmpresaBuses, Recorrido, Parada,Clasificacion
 
@@ -9,6 +11,10 @@ from .models import EmpresaBuses, Recorrido, Parada,Clasificacion
 class EmpresaBusesListView(ListView):
 	model = EmpresaBuses
 	template_name = 'buses/empresa_view.html'
+
+	def logout_view(request):
+
+		print "LOGOUTTT"
 
 	# FILTRAR 
 	def get_queryset(self):
@@ -18,13 +24,8 @@ class EmpresaBusesListView(ListView):
 
 	def get_context_data(self, **kwargs):
 	    context = super(EmpresaBusesListView, self).get_context_data(**kwargs)
-
 	    context['paradas'] = Parada.objects.values('id', 'nombre').all()
-
-	    print context['paradas']
-
 	    return context
-
 
 empresa_list = EmpresaBusesListView.as_view()
 
@@ -88,7 +89,8 @@ empresasBusesIndex = EmpresasBusesIndex.as_view()
 def getRecorridoByEmpresa(request):
 
 	if request.method == 'POST':
-		recorridos = Recorrido.objects.filter(empresa_bus_id = request.POST.get("id"))
+		recorridos = Recorrido.objects.select_related().filter(empresa_bus_id = request.POST.get("id"))
+		print vars(recorridos)
 
 		return render(request, 'buses/partials/recorridos.html', {'recorridos': recorridos})
 	# return render(request, '/', {'object' : fotosCazaRecompensas})
@@ -120,5 +122,33 @@ def calificarEmpresa(request):
 			# response = JsonResponse({'msg': 'Debes iniciar sesion para poder calificar.'})
 			# return response
 			
+def calificacionesByUsuario(request):
 
-	
+	if request.method == 'GET':
+		calificaciones = Clasificacion.objects.select_related().filter(usuario = request.user).all
+
+		return render(request, 'buses/calificaciones.html', {'calificaciones' : calificaciones})
+	elif request.method == 'POST':
+		detalle = Clasificacion.objects.select_related().filter(id = request.POST.get('id'))
+		estrellas = [1,2,3,4,5]
+
+		return render(request, 'buses/partials/calificacion_detalle.html', {'cal_detalle': detalle, 'estrellas' : estrellas})
+
+def borrarCalificacion(request):
+	if request.method == 'POST':
+		res = Clasificacion.objects.filter(id = request.POST.get('id')).delete()
+		calificaciones = Clasificacion.objects.select_related().filter(usuario = request.user).all
+		response = {
+			'cal' : render_to_string('buses/partials/calificaciones.html', {'calificaciones' : calificaciones, 'token' : request.COOKIES['csrftoken']}),
+			'msg' : render_to_string('buses/alerts/success.html', {'msg' : 'La calificacion ha sido eliminada exitosamente.'}),
+		}
+
+		return JsonResponse(response)
+
+def getDetalleByCalificacion(request):
+
+	if request.method == 'POST':
+		res = Clasificacion.objects.filter(id = request.POST.get('id')).update(estrellas = request.POST.get('estrellas'), comentario = request.POST.get('comentario'))
+
+		return render(request, 'buses/alerts/success.html', {'msg': 'Calificacion editada exitosamente.'})
+

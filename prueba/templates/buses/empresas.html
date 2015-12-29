@@ -4,14 +4,11 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
 		<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
-		<title>Empresa de Buses Home</title>
+		<title>Empresas</title>
 	</head>
 	<body>
-
 		<div class="container">
-			<div id="mensajesNotif">
-				
-			</div>
+			<div id="mensajesNotif"></div>
 			<header>
 				<nav class="navbar navbar-default" id="navBar">
 					<a class="navbar-brand" rel="home" href="#" >
@@ -24,10 +21,19 @@
 							<li><a href="#">Quienes somos</a></li>
 							<li><a href="#">Contacto</a></li>
 							{% if request.user.is_authenticated %}
-								<li id="logoutLi"><a href="#logout" data-toggle="modal">Logout <span class="caret"></span></a></li>
-								<li class="hidden" id="loginLi"><a href="#login" data-toggle="modal">Login <span class="caret"></span></a></li>
+								<li id="loginLi" class="hidden"><a href="#login" data-toggle="modal">Login <span class="caret"></span></a></li>
+								<li class="dropdown" role="presentation" id="logoutLi">
+									<a href="#" data-toggle="dropdown" class="dropdown-toggle">
+										{{ request.user.first_name }} <span class="caret"></span>
+									</a>
+									<ul class="dropdown-menu">
+										<li id="logoutLi">
+											<a href="#" data-toggle="modal" id="logout">Logout</a>
+										</li>									
+										<li role="presentation"><a href="{% url 'calificaciones_by_usuario' %}">Calificaciones</a></li>
+									</ul>
+								</li>
 							{% else %}
-								<li class="hidden" id="logoutLi"><a href="#logout" data-toggle="modal">Logout <span class="caret"></span></a></li>
 								<li id="loginLi"><a href="#login" data-toggle="modal">Login <span class="caret"></span></a></li>
 							{% endif %}
 						</ul>
@@ -36,7 +42,7 @@
 			</header>
 			<div class="col-md-5">
 				<h3 class="text-center">Empresas</h3>
-				<form action="{% url 'get_recorrido_by_empresa' %}" id="loginForm">
+				<form action="{% url 'get_recorrido_by_empresa' %}">
 					{% csrf_token %}
 
 					<ul class="list-group" id="empresas_list">
@@ -92,38 +98,38 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<form action="{% url 'account_login' %}" id="loginForm">
-						{% csrf_token %}
-								<div class="main">	
-						            <label>Email</label>    
-						            <div class="input-group">
-						                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-						            	<input type="text" name="login"class="form-control" id="emailField" placeholder="" autofocus>
-						            </div>
-						            <label>Contraseña   <a href="">¿Olvido contraseña?</a></label>
-						            <div class="input-group">
-						                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-						                <input type="password" name="password"class="form-control" id="passField" placeholder="Password">
-						            </div>
-						    
-						        	<div class="row">
-						                <div class="col-xs-6 col-md-6">
-						                </div>
-						                <div class="col-xs-6 col-md-6 pull-right">
-						                    <button type="button" class="btn btn-large btn-success pull-right" id="loginBtn">Login</button>
-						                </div>
-						            </div>
-								</div>
-						        
-								<span class="clearfix"></span>	
+							{% csrf_token %}
+							<div class="main">	
+					            <label>Email</label>    
+					            <div class="input-group">
+					                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+					            	<input type="text" name="login"class="form-control" id="emailField" placeholder="" autofocus>
+					            </div>
+					            <label>Contraseña   <a href="">¿Olvido contraseña?</a></label>
+					            <div class="input-group">
+					                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+					                <input type="password" name="password"class="form-control" id="passField" placeholder="Password">
+					            </div>
+					    
+					        	<div class="row">
+					                <div class="col-xs-6 col-md-6">
+					                </div>
+					                <div class="col-xs-6 col-md-6 pull-right">
+					                    <button type="button" class="btn btn-large btn-success pull-right" id="loginBtn">Login</button>
+					                </div>
+					            </div>
+							</div>
+					        
+							<span class="clearfix"></span>	
 
-								<div class="login-footer">
-						    		<div class="row">
-					                    <div class="left-section">
-					                        <a href="#">Crear cuenta</a>
-					    					<button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Cerrar</button>
-					    				</div>
-						            </div>
-								</div>
+							<div class="login-footer">
+					    		<div class="row">
+				                    <div class="left-section">
+				                        <a href="#">Crear cuenta</a>
+				    					<button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Cerrar</button>
+				    				</div>
+					            </div>
+							</div>
 						</form>
 					</div>
 				</div>
