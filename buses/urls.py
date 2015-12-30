@@ -11,4 +11,6 @@ urlpatterns = [
 	url(r'^usuario/calificaciones/$', views.calificacionesByUsuario, name = 'calificaciones_by_usuario'),
 	url(r'^usuario/calificaciones/editar/$', views.getDetalleByCalificacion, name = 'get_detalle_by_calificacion'),
 	url(r'^usuario/calificaciones/borrar/$', views.borrarCalificacion, name = 'borrar_calificacion'),
+	url(r'^empresas/consulta/(?P<origen>[a-z A-Z]+)/(?P<destino>[a-z A-Z]+)/$', views.recorridosByParadas, name = 'recorridos_by_paradas'),
+	url(r'^empresas/consulta/$', views.recorridosByParadas, name = 'recorridos_by_paradas'),
 ]

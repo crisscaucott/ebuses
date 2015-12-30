@@ -5,7 +5,8 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth import logout
 from django.template.loader import render_to_string
 from django.http import JsonResponse
-from .models import EmpresaBuses, Recorrido, Parada,Clasificacion
+from django.db.models import Q
+from .models import EmpresaBuses, Recorrido, Parada, Clasificacion, ParadaRecorrido
 
 # Create your views here.
 class EmpresaBusesListView(ListView):
@@ -86,6 +87,7 @@ class EmpresasBusesIndex(ListView):
 		
 empresasBusesIndex = EmpresasBusesIndex.as_view()
 
+
 def getRecorridoByEmpresa(request):
 
 	if request.method == 'POST':
@@ -151,4 +153,40 @@ def getDetalleByCalificacion(request):
 		res = Clasificacion.objects.filter(id = request.POST.get('id')).update(estrellas = request.POST.get('estrellas'), comentario = request.POST.get('comentario'))
 
 		return render(request, 'buses/alerts/success.html', {'msg': 'Calificacion editada exitosamente.'})
+
+# /buses/empresas/consulta/ORIGEN/DESTINO/
+def recorridosByParadas(request, origen = None, destino = None):
+
+	if request.method == 'GET':
+		ids = []
+		for i in ParadaRecorrido.objects.raw(""" select pr.id, pr.recorrido_id
+				from parada as p, parada_recorrido as pr
+				where p.id = pr.`parada_id` and 
+				(p.nombre = %s or p.nombre = %s)
+				group by recorrido_id
+				having count(recorrido_id) > 1 """, [origen, destino]):
+			ids.append(i.recorrido_id)
+
+		if len(ids) == 0:	# SI NO HAY RECORRIDOS
+			paradas = Parada.objects.values('id', 'nombre').all()
+			return render(request, 'buses/empresa_view.html', {'msg_err': 'No hay recorridos con origen y destino elegidos.', 'paradas' : paradas})
+		else:
+			# recorridos = ParadaRecorrido.objects.select_related().filter(recorrido__in = ids).all()
+			recorridos = Recorrido.objects.select_related().filter(id__in = ids).all()
+			return render(request, 'buses/recorridos_empresa.html', {'recorridos' : recorridos, 'origen' : origen, 'destino': destino})
+	elif request.method == 'POST':
+		print "AJAX"
+		paradas = ParadaRecorrido.objects.select_related().filter(recorrido = request.POST.get('id')).exclude(parada = request.POST.get('origen')).exclude(parada = request.POST.get('destino'))
+		if not paradas:
+			response = {
+				'res' : 'No hay paradas intermedias.'
+			}
+		else:
+			response = {'res' : render_to_string('buses/partials/paradas_inter.html', {'paradas' : paradas})}
+
+		return JsonResponse(response)
+		
+
+			
+
 

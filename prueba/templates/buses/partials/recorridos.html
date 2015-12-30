@@ -6,13 +6,13 @@
 		<th>Destino</th>
 		<th>Accion</th>
 	</tr>
-	<tr>
-		{% for r in recorridos %}
+	{% for r in recorridos %}
+		<tr>
 			<td>{{ r.nombre }}</td>
 			<td>${{ r.precio }}</td>
 			<td>{{ r.origen.nombre }}</td>
 			<td>{{ r.destino.nombre }}</td>
 			<td><button href="#calificar" class="btn btn-primary" data-toggle="modal" value="{{ r.id }}" id="calificarModalBtn">Calificar</button></td>
-		{% endfor %}
-	</tr>
+		</tr>
+	{% endfor %}
 </table>

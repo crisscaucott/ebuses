@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+	<title>Empresa de Buses Home</title>
+</head>
+<body>
+	<div class="container">
+		<header>
+			<nav class="navbar navbar-default" id="navBar">
+				<a class="navbar-brand" rel="home" href="#" >
+					<img src="" alt="Logo aqui">
+				</a>
+				<div class="col-md-offset-2">
+					<ul class="nav nav-pills nav-justified">
+						<li><a href="{% url 'empresa_list' %}">Home</a></li>
+						<li><a href="{% url 'empresas_buses_index' %}">Empresas</a></li>
+						<li><a href="#">Quienes somos</a></li>
+						<li><a href="#">Contacto</a></li>
+						{% if request.user.is_authenticated %}
+							<li id="loginLi" class="hidden"><a href="#login" data-toggle="modal">Login <span class="caret"></span></a></li>
+							<li class="dropdown" role="presentation" id="logoutLi">
+								<a href="#" data-toggle="dropdown" class="dropdown-toggle">
+									Hola, {{ request.user.first_name }} <span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu">
+									<li id="logoutLi">
+										<a href="#" data-toggle="modal" id="logout">Logout</a>
+									</li>									
+									<li role="presentation"><a href="{% url 'calificaciones_by_usuario' %}">Calificaciones</a></li>
+								</ul>
+							</li>
+						{% else %}
+							<li id="loginLi"><a href="#login" data-toggle="modal">Login <span class="caret"></span></a></li>
+						{% endif %}
+					</ul>
+				</div>
+			</nav>
+		</header>
+
+		<div class="col-md-7">
+			<h3 class="text-center">Recorridos desde '{{ origen }}' hacia '{{ destino }}' </h3>
+			<table class="table table-hover table-bordered">
+				<form action="" method="POST">
+					{% csrf_token %}
+					<tr>
+						<th>Empresa</th>
+						<th>Recorrido</th>
+						<th>Precio</th>
+						<th>Origen</th>
+						<th>Destino</th>
+						<th>Paradas intermedias</th>
+					</tr>
+					{% for r in recorridos %}
+						<tr>
+							{% if r.empresa_bus.url %}
+								<td><a href="{{ r.empresa_bus.url }}" target="_blank">{{ r.empresa_bus.nombre }}</a></td>
+							{% else %}
+								<td>{{ r.empresa_bus.nombre }}</td>
+							{% endif %}
+							<td>{{ r.nombre }}</td>
+							<td>${{ r.precio }}</td>
+							<td>{{ r.origen.nombre }}</td>
+							<td>{{ r.destino.nombre }}</td>
+							<td><button class="btn btn-primary verParadas" value="{{r.id}}|{{r.origen.id}}|{{r.destino.id}}">Ver</button></td>
+						</tr>
+					{% endfor %}
+				</form>
+			</table>
+		</div>
+
+	</div>
+	<script src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

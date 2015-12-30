@@ -22,6 +22,9 @@ class Parada(models.Model):
 	class Meta:
 		db_table = 'parada'
 
+	def __unicode__(self):
+		return self.nombre
+
 class Recorrido(models.Model):
 	nombre = models.CharField(max_length = 40)
 	precio = models.PositiveIntegerField()
@@ -42,6 +45,9 @@ class ParadaRecorrido(models.Model):
 
 	class Meta:
 		db_table = 'parada_recorrido'
+
+	def __unicode__(self):
+		return self.recorrido.nombre
 
 class Usuario(models.Model):
 	nombre = models.CharField(max_length = 40)

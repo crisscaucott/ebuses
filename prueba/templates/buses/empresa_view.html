@@ -8,7 +8,12 @@
 </head>
 <body>
 	<div class="container">
-	
+		{% if msg_err %}
+			<div class="alert alert-danger">
+				<button class="close" data-dismiss="alert"><span>&times;</span></button>
+				<strong>{{msg_err}}</strong>
+			</div>
+		{% endif %}
 		<header>
 			<nav class="navbar navbar-default" id="navBar">
 				<a class="navbar-brand" rel="home" href="#" >
@@ -24,7 +29,7 @@
 							<li id="loginLi" class="hidden"><a href="#login" data-toggle="modal">Login <span class="caret"></span></a></li>
 							<li class="dropdown" role="presentation" id="logoutLi">
 								<a href="#" data-toggle="dropdown" class="dropdown-toggle">
-									{{ request.user.first_name }} <span class="caret"></span>
+									Hola, {{ request.user.first_name }} <span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu">
 									<li id="logoutLi">
@@ -91,7 +96,7 @@
 				<div class="form-group">
 					<div class="input-group">
 						<span class="input-group-addon">Ciudad:</span>
-						<select name="" id="" class="form-control">
+						<select name="" id="origenSelect" class="form-control">
 							{% for p in paradas %}
 								<option value="{{ p.id }}">{{ p.nombre }}</option>
 							{% endfor %}
@@ -116,14 +121,12 @@
 	            </div>
 			</div>
 
-			<div></div>
-
 			<div class="col-md-6">
 				<h4 class="text-center">Destino</h2>
 				<div class="form-group">
 					<div class="input-group">
 							<span class="input-group-addon">Ciudad:</span>
-							<select name="" id="" class="form-control">
+							<select name="" id="destinoSelect" class="form-control">
 								{% for p in paradas %}
 									<option value="{{ p.id }}">{{ p.nombre }}</option>
 								{% endfor %}
